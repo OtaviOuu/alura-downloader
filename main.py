@@ -3,57 +3,25 @@ import asyncio
 import questionary
 from parsel.selector import Selector
 from pprint import pprint
-import nodriver as uc
-
-
-async def login():
-    email = input("Digite a email: ")
-    password = input("Digite o senha: ")
-
-    if not email or not password:
-        raise ValueError("Email and password are required.")
-
-    browser = await uc.start(
-        headless=True,
-        browser_executable_path="/snap/bin/chromium",
-    )
-    login_form_url = "https://cursos.alura.com.br/loginForm"
-
-    login_page = await browser.get(login_form_url)
-
-    email_input = await login_page.select("#login-email")
-    password_input = await login_page.select("#password")
-    login_btn = await login_page.select(".btn-login")
-
-    await email_input.send_keys(email)
-    await password_input.send_keys(password)
-    await login_btn.click()
-
-    await login_page
-
-    cookies = await browser.cookies.get_all(requests_cookie_format=True)
-    browser.stop()
-
-    return cookies
+import dotenv
+import os
 
 
 async def main():
-    cookies = await login()
-    cookie_string = "; ".join(f"{cookie.name}={cookie.value}" for cookie in cookies)
+    dotenv.load_dotenv()
+    cookies = os.getenv("COOKIES")
     headers = {
         "Referer": "https://cursos.alura.com.br/discover",
         "Alt-Used": "cursos.alura.com.br",
-        "Cookie": cookie_string,
+        "Cookie": cookies,
     }
 
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.get(
-            url="https://cursos.alura.com.br/courses/filtered",
-            params={"categoryUrlName": "programacao"},
+            url="https://cursos.alura.com.br/courses/filtered?categoryUrlName=programacao",
         ) as response:
             text = await response.text()
             doc = Selector(text=text)
-
             cursos = doc.css(".card-list__item")
             print(len(cursos))
             selecionados = await questionary.checkbox(
