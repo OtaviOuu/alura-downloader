@@ -1,6 +1,13 @@
-# 📥 alura-downloader
+<h1 align="center">
+  <img src="https://github.com/user-attachments/assets/6c813b3e-8628-4bdc-ac5c-959886728578" alt="Ícone" width="100"/>
+  <div style="margin-bottom: 19px;">
+    Alura Downloader  
+  </div>
+</h1>
 
-![Demonstração](https://github.com/user-attachments/assets/1af6d298-c987-4fab-88f6-a91dc866dd28)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1af6d298-c987-4fab-88f6-a91dc866dd28" alt="Demonstração do alura-downloader"/>
+</p>
 
 ---
 
